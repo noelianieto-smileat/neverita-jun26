@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smileat · Neverita 2026</title>
+<style>
+
+  /* ============================================================
+     1) TU CONTENIDO VIVE EN EL <script>, AL FINAL DEL ARCHIVO
+        (busca CONTENIDO). Para añadir algo nuevo:
+        - Copia tu foto o vídeo dentro de la carpeta /media
+        - Añade un bloque a la lista con sus métricas
+        - El ORDEN en que escribas los bloques es el orden en que
+          se muestran → colócalo donde le corresponda de mejor a
+          peor resultado.
+     ============================================================ */
+
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap');
+
+  :root{
+    --brand: #29abe2;
+    --ink: #10222c;
+    --ink-dim: #7c8a96;
+    --page-bg: #eef3f6;
+    --card-bg: #ffffff;
+    --chip-bg: #f3f6f9;
+    --line: #e3eaf0;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0; padding:0;
+    background: var(--page-bg);
+    color: var(--ink);
+    font-family: 'Montserrat', sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* cabecera */
+  header{
+    background: var(--brand);
+    color: #ffffff;
+    padding: 26px 24px 28px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  header .logo-chip{
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+  }
+  header img.logo{
+    height: 32px;
+    width: auto;
+    /* logo con sus colores originales (azul) sobre el bocadillo blanco */
+  }
+
+  /* pestañas país */
+  .tabs{
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .tab-btn{
+    appearance: none;
+    border: 1.5px solid rgba(255,255,255,0.55);
+    background: transparent;
+    color: #ffffff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    padding: 7px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .tab-btn.active{
+    background: #ffffff;
+    color: var(--brand);
+    border-color: #ffffff;
+  }
+  header h1{
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+  }
+  header p{
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* lista de creatividades */
+  main{
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+
+  .card{
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(16,34,44,0.06);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rank{
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--brand);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    z-index: 2;
+  }
+
+  .media{
+    background: #10222c;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+  .media img, .media video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display:block;
+  }
+
+  .card-body{
+    padding: 16px 16px 18px;
+  }
+
+  .card-title{
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+
+  .badge-new{
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff4e0;
+    color: #a5670a;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+
+  .stats{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .stat{
+    background: var(--chip-bg);
+    border-radius: 10px;
+    padding: 9px 6px;
+    text-align: center;
+  }
+  .stat .val{
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .stat .lab{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-top: 4px;
+  }
+
+  /* semáforo de rendimiento por métrica (relativo al resto de
+     creatividades del mismo país) */
+  .stat.good{ background: #e3f6ea; }
+  .stat.good .val{ color: #1a8f4c; }
+  .stat.mid{ background: #fdf3d7; }
+  .stat.mid .val{ color: #9a6b00; }
+  .stat.bad{ background: #fbe6e3; }
+  .stat.bad .val{ color: #c23a2a; }
+
+  footer{
+    text-align:center;
+    padding: 0 16px 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: var(--ink-dim);
+  }
+
+  @media (max-width: 900px){
+    main{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px){
+    main{ grid-template-columns: 1fr; }
+    header h1{ font-size: 18px; }
+  }
+
+  /* tabla top productos */
+  .productos-section{
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 20px 50px;
+  }
+  .productos-section h2{
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 4px;
+  }
+  .productos-section .productos-sub{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-dim);
+    margin: 0 0 16px;
+  }
+  .productos-card{
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(16,34,44,0.06);
+  }
+  table.productos-tabla{
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .productos-tabla thead th{
+    background: var(--brand);
+    color: #ffffff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 10px 14px;
+  }
+  .productos-tabla thead th.num{ text-align: right; }
+  .productos-tabla tbody td{
+    padding: 10px 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    border-top: 1px solid var(--line);
+  }
+  .productos-tabla tbody tr:nth-child(even){ background: var(--chip-bg); }
+  .productos-tabla td.pos{
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    color: var(--brand);
+    width: 32px;
+  }
+  .productos-tabla td.num{
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .productos-tabla td.ingresos{
+    font-weight: 700;
+  }
+  @media (max-width: 560px){
+    .productos-tabla thead th, .productos-tabla tbody td{ padding: 8px 8px; font-size: 12px; }
+  }
+
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-chip">
+      <img class="logo" src="assets/logo-smileat.png" alt="Smileat">
+    </div>
+    <h1 id="titulo"></h1>
+    <p id="subtitulo"></p>
+    <div class="tabs">
+      <button class="tab-btn" data-pais="es">ESPAÑA</button>
+      <button class="tab-btn" data-pais="pt">PORTUGAL</button>
+    </div>
+  </header>
+
+  <main id="lista"></main>
+
+  <section class="productos-section">
+    <h2>Top 20 productos con más ingresos</h2>
+    <p class="productos-sub" id="productos-sub"></p>
+    <div class="productos-card">
+      <table class="productos-tabla">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Producto</th>
+            <th class="num">Unidades</th>
+            <th class="num">Ingresos</th>
+          </tr>
+        </thead>
+        <tbody id="productos-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer id="pie"></footer>
+
+<script>
+
+  /* ============================================================
+     CONTENIDO
+     Ya están ordenados de MEJOR a PEOR resultado (según
+     "Resultados" del CSV de Meta Ads). Si añades una creatividad
+     nueva, colócala en el bloque que le corresponda según sus
+     resultados.
+
+     "IMG 1_Regalo-Nevera-SUBS" e "IMG_2_Regalo-Nevera-SUBS"
+     aparecían dos veces en el CSV (dos ubicaciones/públicos
+     distintos). Sumé impresiones, clics, alcance, gasto,
+     resultados y valor, y recalculé coste por resultado y
+     frecuencia/CTR ponderados por alcance.
+
+     "IMG_3_Regalo-Nevera-JUNIO" se dejó fuera a propósito
+     (estuvo muy poco tiempo activa).
+     ============================================================ */
+
+  const CONTENIDO_ES = [
+    {
+      type: "image", src: "media/IMG_1_Regalo-Nevera-SUBS.jpg", nota: "IMG 1 · Regalo Nevera SUBS",
+      metricas: { impresiones: "732.868", alcance: "163.708", frecuencia: "4,48", clics: "5.778", ctr: "0,81%", gasto: "2.912,27 €", resultados: "482", costeResultado: "6,04 €", valorResultados: "23.464,00 €" }
+    },
+    {
+      type: "video", src: "media/VID_1_Regalo-Nevera-JUNIO.mp4", nota: "VID 1 · Regalo Nevera JUNIO",
+      metricas: { impresiones: "470.894", alcance: "140.474", frecuencia: "3,35", clics: "4.302", ctr: "0,91%", gasto: "1.564,86 €", resultados: "433", costeResultado: "3,61 €", valorResultados: "19.847,45 €" }
+    },
+    {
+      type: "image", src: "media/IMG_1_Regalo-Nevera-JUNIO.jpg", nota: "IMG 1 · Regalo Nevera JUNIO",
+      metricas: { impresiones: "201.202", alcance: "79.366", frecuencia: "2,54", clics: "3.749", ctr: "1,86%", gasto: "645,51 €", resultados: "314", costeResultado: "2,06 €", valorResultados: "15.193,18 €" }
+    },
+    {
+      type: "image", src: "media/IMG_2_Regalo-Nevera-SUBS.jpg", nota: "IMG 2 · Regalo Nevera SUBS",
+      metricas: { impresiones: "169.410", alcance: "50.337", frecuencia: "3,37", clics: "1.330", ctr: "0,81%", gasto: "754,52 €", resultados: "155", costeResultado: "4,87 €", valorResultados: "7.578,77 €" }
+    },
+    {
+      type: "image", src: "media/IMG_3_Regalo-Nevera-SUBS.jpg", nota: "IMG 3 · Regalo Nevera SUBS",
+      nueva: "Activa desde el 13 jul",
+      metricas: { impresiones: "43.138", alcance: "22.028", frecuencia: "1,96", clics: "481", ctr: "1,12%", gasto: "152,84 €", resultados: "43", costeResultado: "3,55 €", valorResultados: "1.879,53 €" }
+    },
+    {
+      type: "image", src: "media/IMG_5_Regalo-Nevera-SUBS.jpg", nota: "IMG 5 · Regalo Nevera SUBS",
+      nueva: "Activa desde el 13 jul",
+      metricas: { impresiones: "27.532", alcance: "18.250", frecuencia: "1,51", clics: "262", ctr: "0,95%", gasto: "80,64 €", resultados: "23", costeResultado: "3,51 €", valorResultados: "1.071,01 €" }
+    },
+    {
+      type: "image", src: "media/IMG_2_Regalo-Nevera-JUNIO.jpg", nota: "IMG 2 · Regalo Nevera JUNIO",
+      metricas: { impresiones: "5.726", alcance: "3.925", frecuencia: "1,46", clics: "100", ctr: "1,75%", gasto: "26,31 €", resultados: "19", costeResultado: "1,38 €", valorResultados: "892,98 €" }
+    },
+    {
+      type: "image", src: "media/IMG_4_Regalo-Nevera-SUBS.jpg", nota: "IMG 4 · Regalo Nevera SUBS",
+      nueva: "Activa desde el 13 jul",
+      metricas: { impresiones: "6.331", alcance: "4.844", frecuencia: "1,31", clics: "56", ctr: "0,88%", gasto: "20,04 €", resultados: "4", costeResultado: "5,01 €", valorResultados: "129,99 €" }
+    },
+    // 👇 copia y pega esta plantilla para añadir una nueva (colócala en su sitio según resultados):
+    // {
+    //   type: "image", src: "media/mi-archivo.jpg", nota: "Descripción",
+    //   metricas: { impresiones: "12.400", alcance: "9.800", frecuencia: "1,27", clics: "310", ctr: "2,5%", gasto: "145,00 €", resultados: "42", costeResultado: "3,45 €", valorResultados: "890,00 €" }
+    // },
+  ];
+
+  /* Portugal · imágenes en la carpeta /media-pt (nombres sin espacios).
+     Datos del CSV "Anuncios 21 jun 2026 – 20 jul 2026" (Portugal), ya
+     ordenados de mejor a peor resultado. */
+  const CONTENIDO_PT = [
+    {
+      type: "image", src: "media-pt/img2-neverita-jun26.jpg", nota: "IMG 2 · Neverita JUN26",
+      metricas: { impresiones: "410.684", alcance: "81.068", frecuencia: "5,07", clics: "4.478", ctr: "1,09%", gasto: "651,68 €", resultados: "226", costeResultado: "2,88 €", valorResultados: "9.053,09 €" }
+    },
+    {
+      type: "image", src: "media-pt/img1-neverita-jun26.jpg", nota: "IMG 1 · Neverita JUN26",
+      metricas: { impresiones: "212.769", alcance: "46.835", frecuencia: "4,54", clics: "2.368", ctr: "1,11%", gasto: "399,61 €", resultados: "151", costeResultado: "2,65 €", valorResultados: "6.137,56 €" }
+    },
+    {
+      type: "image", src: "media-pt/img3-neverita-jun26.jpg", nota: "IMG 3 · Neverita JUN26",
+      metricas: { impresiones: "17.247", alcance: "8.091", frecuencia: "2,13", clics: "138", ctr: "0,80%", gasto: "36,90 €", resultados: "17", costeResultado: "2,17 €", valorResultados: "670,91 €" }
+    },
+  ];
+
+  /* ============================================================
+     TOP 20 PRODUCTOS POR INGRESOS
+     Fuente: GA4 (Smileat Global), informe "Formato libre" con
+     Ingresos del artículo, 23 jun – 15 jul 2026 (mismo rango que la
+     campaña ES de arriba). Ingresos y unidades ya sumados por
+     producto (cada producto podía aparecer varias veces asociado a
+     distintos anuncios/creatividades: VID_1_Regalo-Nevera-JUNIO,
+     IMG 1_Regalo-Nevera-JUNIO, e IMG 1_Regalo-Nevera-JUNIO - Copia,
+     que se corresponde con el anuncio "IMG 1_Regalo-Nevera-SUBS"
+     mostrado arriba).
+     ============================================================ */
+  const TOP_PRODUCTOS = [
+    { pos: 1, nombre: "Smilado fresa y manzana", unidades: "111", ingresos: "768,54 €" },
+    { pos: 2, nombre: "Smilado albaricoque y plátano", unidades: "83", ingresos: "575,97 €" },
+    { pos: 3, nombre: "Tarrito de cocidito con ternera y jamón", unidades: "207", ingresos: "544,03 €" },
+    { pos: 4, nombre: "100% Frutos secos y cacahuete", unidades: "40", ingresos: "511,80 €" },
+    { pos: 5, nombre: "Tarrito de ternera con verduras", unidades: "194", ingresos: "505,46 €" },
+    { pos: 6, nombre: "Tarrito de Gazpachito con sandía", unidades: "223", ingresos: "489,85 €" },
+    { pos: 7, nombre: "Tarrito de pavo y verduras", unidades: "185", ingresos: "483,65 €" },
+    { pos: 8, nombre: "Tarrito de brócoli, cordero y chirivía", unidades: "175", ingresos: "456,35 €" },
+    { pos: 9, nombre: "Pack Carne y Pescado", unidades: "14", ingresos: "419,16 €" },
+    { pos: 10, nombre: "Pack Cachitos comidas", unidades: "12", ingresos: "381,60 €" },
+    { pos: 11, nombre: "Pack Tarritos de frutas variadas", unidades: "21", ingresos: "374,85 €" },
+    { pos: 12, nombre: "Tarrito de verduras con lubina y merluza", unidades: "143", ingresos: "369,87 €" },
+    { pos: 13, nombre: "Tarrito de verduras con merluza", unidades: "142", ingresos: "368,38 €" },
+    { pos: 14, nombre: "Tarrito de pollo con arroz y guisantes", unidades: "139", ingresos: "364,71 €" },
+    { pos: 15, nombre: "Tarrito de CA-CHI-TOS de arroz integral con salmón y guisantes", unidades: "125", ingresos: "335,73 €" },
+    { pos: 16, nombre: "Tarrito de CA-CHI-TOS arroz con pavo y verduras", unidades: "123", ingresos: "330,99 €" },
+    { pos: 17, nombre: "Tarrito de guisito de alubias", unidades: "125", ingresos: "323,05 €" },
+    { pos: 18, nombre: "Tarrito de bacalao con patatas y verduras", unidades: "115", ingresos: "294,95 €" },
+    { pos: 19, nombre: "Pouch de fresa y plátano", unidades: "180", ingresos: "293,70 €" },
+    { pos: 20, nombre: "Pouch de leche de almendras, mango y piña", unidades: "170", ingresos: "282,55 €" },
+  ];
+  const PRODUCTOS_SUB = "GA4 · 23 jun – 15 jul 2026 · Ingresos por producto (todos los anuncios de la campaña)";
+
+  const TITULO = "SMILEAT · NEVERITA 2026";
+  const SUBTITULOS = {
+    es: "Meta Ads · 23 jun – 15 jul 2026 · Ordenado de mejor a peor (ventas)",
+    pt: "Meta Ads · 21 jun – 20 jul 2026 · Ordenado de mejor a peor (ventas)",
+  };
+  const DATOS = { es: CONTENIDO_ES, pt: CONTENIDO_PT };
+
+  // ============================================================
+
+  document.getElementById('titulo').textContent = TITULO;
+
+  document.getElementById('productos-sub').textContent = PRODUCTOS_SUB;
+  const productosTbody = document.getElementById('productos-tbody');
+  productosTbody.innerHTML = TOP_PRODUCTOS.map(p => `
+    <tr>
+      <td class="pos">${p.pos}</td>
+      <td>${p.nombre}</td>
+      <td class="num">${p.unidades}</td>
+      <td class="num ingresos">${p.ingresos}</td>
+    </tr>
+  `).join('');
+
+  const lista = document.getElementById('lista');
+  const subtituloEl = document.getElementById('subtitulo');
+  const pieEl = document.getElementById('pie');
+  const tabButtons = document.querySelectorAll('.tab-btn');
+
+  const campos = [
+    ['resultados', 'Resultados'],
+    ['gasto', 'Gasto'],
+    ['costeResultado', 'Coste/result.'],
+    ['impresiones', 'Impresiones'],
+    ['alcance', 'Alcance'],
+    ['frecuencia', 'Frecuencia'],
+    ['clics', 'Clics'],
+    ['ctr', 'CTR'],
+    ['valorResultados', 'Ingresos'],
+  ];
+
+  /* ------------------------------------------------------------
+     SEMÁFORO POR MÉTRICA (umbrales fijos, no relativos entre sí)
+     Para cada métrica defines:
+       - dir: 1 = cuanto más alto mejor · -1 = cuanto más bajo mejor
+       - bueno: a partir de aquí (o por debajo, si dir=-1) -> VERDE
+       - regular: a partir de aquí (o por debajo, si dir=-1) -> AMARILLO
+       - por debajo de "regular" (o por encima, si dir=-1) -> ROJO
+     Cambia estos números cuando quieras, no hay que tocar nada más.
+     ------------------------------------------------------------ */
+  const UMBRALES = {
+    resultados:      { dir: 1,  bueno: 200,   regular: 50 },
+    costeResultado:  { dir: -1, bueno: 6,     regular: 8 },
+    frecuencia:      { dir: -1, bueno: 3,     regular: 5 },
+    ctr:             { dir: 1,  bueno: 1,     regular: 0.8 },
+    alcance:         { dir: 1,  bueno: 50000, regular: 15000 },
+    valorResultados: { dir: 1,  bueno: 5000,  regular: 1000 },
+  };
+
+  function parseNum(str){
+    if (str == null) return NaN;
+    const limpio = String(str).replace(/[€%\s]/g, '').replace(/\./g, '').replace(',', '.');
+    const n = parseFloat(limpio);
+    return isNaN(n) ? NaN : n;
+  }
+
+  function claseColor(valor, umbral){
+    if (isNaN(valor)) return null;
+    const { dir, bueno, regular } = umbral;
+    if (dir === 1){
+      if (valor >= bueno) return 'good';
+      if (valor >= regular) return 'mid';
+      return 'bad';
+    } else {
+      if (valor <= bueno) return 'good';
+      if (valor <= regular) return 'mid';
+      return 'bad';
+    }
+  }
+
+  // Métricas que dependen de cuánto tiempo lleva activa la creatividad
+  // (se acumulan con los días: a más tiempo, más alcance/resultados/
+  // ingresos, y la frecuencia también sube). Para creatividades marcadas
+  // como "nueva" (poco tiempo activas) no se colorean, porque no es
+  // justo compararlas con campañas de semanas. CTR y coste/resultado sí
+  // se colorean siempre: son ratios/promedios, no acumulados.
+  const METRICAS_DEPENDIENTES_DEL_TIEMPO = ['resultados', 'alcance', 'valorResultados', 'frecuencia'];
+
+  // Asigna a cada creatividad su color en cada métrica, según los
+  // umbrales fijos de arriba (independiente de lo que hagan las demás).
+  function calcularColores(contenido){
+    return contenido.map(item => {
+      const colorItem = {};
+      Object.keys(UMBRALES).forEach(key => {
+        if (item.nueva && METRICAS_DEPENDIENTES_DEL_TIEMPO.includes(key)) return;
+        const val = parseNum(item.metricas?.[key]);
+        const cls = claseColor(val, UMBRALES[key]);
+        if (cls) colorItem[key] = cls;
+      });
+      return colorItem;
+    });
+  }
+
+  function render(pais){
+    const contenido = DATOS[pais] || [];
+    const colores = calcularColores(contenido);
+
+    subtituloEl.textContent = SUBTITULOS[pais];
+    pieEl.textContent = `${contenido.length} creatividades`;
+    tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.pais === pais));
+
+    lista.innerHTML = '';
+    contenido.forEach((item, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const mediaEl = item.type === 'video'
+        ? `<video src="${item.src}" controls playsinline></video>`
+        : `<img src="${item.src}" alt="${item.nota || ''}">`;
+
+      const m = item.metricas || {};
+      const colorItem = colores[i] || {};
+      const statsHtml = campos.map(([key, label]) => {
+        const clsColor = colorItem[key] ? ` ${colorItem[key]}` : '';
+        return `
+        <div class="stat${clsColor}">
+          <div class="val">${m[key] ?? '—'}</div>
+          <div class="lab">${label}</div>
+        </div>
+      `;
+      }).join('');
+
+      const badgeNuevaHtml = item.nueva
+        ? `<span class="badge-new">🆕 ${item.nueva}</span>`
+        : '';
+
+      card.innerHTML = `
+        <div class="rank">#${i + 1}</div>
+        <div class="media">${mediaEl}</div>
+        <div class="card-body">
+          <p class="card-title">${item.nota || ''}</p>
+          ${badgeNuevaHtml}
+          <div class="stats">${statsHtml}</div>
+        </div>
+      `;
+
+      lista.appendChild(card);
+    });
+  }
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => render(btn.dataset.pais));
+  });
+
+  render('es');
+
+</script>
+</body>
+</html>
